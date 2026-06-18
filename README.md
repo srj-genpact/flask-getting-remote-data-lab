@@ -1,69 +1,61 @@
 # Getting Remote Data Lab
 
-## The Scenario 
-It is time to practice building out your own class for retrieving remote data. In this lab, you are tasked with building a generic GetRequester class. This class will be able to take in a URL on initialization and send an HTTP GET request on command. You will also need to build a method for dealing with requests that return JSON.
+This repository contains the solution for the **Retrieving Remote Data from an API** lab. It implements a generic Python class, `GetRequester`, designed to perform HTTP GET requests to a remote endpoint and deserialize JSON response payloads.
 
-## Tools and Resources 
-- [GitHub Repo](https://github.com/learn-co-curriculum/flask-getting-remote-data-lab)
-- [GET - Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET)
-- [HTTP methods - Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
-- [requests](https://requests.readthedocs.io/en/latest/)
-- [Python JSON](https://docs.python.org/3/library/json.html)
+## Features
 
-## Instructions
+- **Generic HTTP GET Client:** Can be initialized with any target URL.
+- **Raw Response Body Retrieval:** Fetches and returns raw byte content via `get_response_body()`.
+- **JSON Deserialization:** Resolves and decodes the response payload into standard Python data structures (lists, dictionaries, etc.) using `load_json()`.
 
-### Set Up
+## API Documentation
 
-Before we begin coding, let's complete the initial setup for this lesson: 
+### `GetRequester` Class
 
-* Fork and Clone
-  * For this lesson, you will need the following GitHub Repo:
-  * Go to the provided GitHub repository link.
-  * Fork the repository to your GitHub account.
-  * Clone the forked repository to your local machine.
-* Open and Run File
-  * Open the project in VSCode.
-  * Run pipenv install to install all necessary dependencies.
-  * Run pipenv shell to open instance of python shell
+Located in [GetRequester.py](file:///c:/Users/flatironuser20/Desktop/PyAssignments/Py-API-Development/PyRemoteDatafromAPI/lib/GetRequester.py).
 
-### Task 1: Define the Problem
+#### `__init__(self, url)`
+Initializes the class with the target endpoint URL.
+- **url** (str): The target endpoint URL.
 
-* Build a class to interact with api
-* Get the data
-* Convert to json data
+#### `get_response_body(self)`
+Queries the stored URL endpoint via an HTTP GET request.
+- **Returns**: `bytes` - The raw response body.
 
-### Task 2: Determine the Design
+#### `load_json(self)`
+Retrieves the raw HTTP response body and deserializes it.
+- **Returns**: `list` or `dict` - The parsed JSON data structure.
 
-* Endpoint: https://learn-co-curriculum.github.io/json-site-example/endpoints/people.json.
-  * ```get_response_body```
-    * Query endpoint
-  * ```load_json```
-    * Convert to json data
+## Usage Example
 
-#### Task 3: Develop, Test, and Refine the Code
+```python
+from lib.GetRequester import GetRequester
 
-* Create feature branch
-* Build get_response_body to query endpoint
-* Convert endpoint data to json and return the data
-* Push feature branch and open a PR on GitHub
-* Merge to main
+# Target endpoint containing a JSON employee directory
+url = "https://learn-co-curriculum.github.io/json-site-example/endpoints/people.json"
 
-#### Task 4: Document and Maintain
+# Initialize the requester
+requester = GetRequester(url)
 
-Best Practice documentation steps:
-* Add comments to code to explain purpose and logic, clarifying intent / functionality of code to other developers.
-* Add screenshot of completed work included in Markdown in README.
-* Update README text to reflect the functionality of the application following https://makeareadme.com.
-* Delete any stale branches on GitHub
-* Remove unnecessary/commented out code
-* If needed, update git ignore to remove sensitive data
+# Retrieve raw content (bytes)
+raw_bytes = requester.get_response_body()
+print("Raw Bytes:", raw_bytes[:100])
 
-## Submission
+# Retrieve and parse JSON payload
+employees = requester.load_json()
+for employee in employees:
+    print(f"Name: {employee['name']}, Occupation: {employee['occupation']}")
+```
 
-Once all tests are passing and working code is pushed to the GitHub main branch, submit your GitHub repo through Canvas using CodeGrade.
+## Setup & Testing
 
-## Grading Criteria
+### Prerequisites
+- Python 3.8+
+- `requests` library
 
-The application passes all test suites.
-* Get json data
-* Convert to Json
+### Running Unit Tests
+To run the automated tests and verify the implementation:
+```bash
+python -m pytest
+```
+All tests should pass, confirming correct integration with the API and exact structure matching.
